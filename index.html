@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PNLE Command Center | NP I–NP V</title>
+<style>
+:root{--bg:#f4f7fb;--surface:#fff;--ink:#172033;--muted:#667085;--line:#e5eaf0;--primary:#1769aa;--primary-soft:#edf6ff;--success:#138a5b;--success-soft:#eaf8f2;--danger:#c83f3f;--danger-soft:#fff0f0;--shadow:0 8px 24px rgba(16,24,40,.06)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}
+.layout{min-height:100vh}.sidebar{position:fixed;z-index:30;left:0;top:0;bottom:0;width:255px;background:var(--surface);border-right:1px solid var(--line);padding:18px 14px;overflow:auto}.brand{padding:8px 12px 22px}.brand .emoji{font-size:26px}.brand h2{font-size:18px;margin:4px 0;color:var(--primary)}.brand small{color:var(--muted)}
+nav button{display:block;width:100%;border:0;background:transparent;text-align:left;color:#344054;padding:11px 12px;border-radius:10px;margin:3px 0;cursor:pointer}nav button:hover,nav button.active{background:var(--primary-soft);color:var(--primary);font-weight:750}
+main{margin-left:255px;padding:24px;max-width:1600px}.top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:22px}.top h1{font-size:27px;margin:0}.search{width:min(440px,100%);border:1px solid var(--line);background:#fff;border-radius:11px;padding:11px 14px}
+section{display:none}section.active{display:block}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.section-head h2{margin:0}.muted{color:var(--muted)}
+.grid{display:grid;gap:15px}.stats{grid-template-columns:repeat(4,1fr)}.subjects{grid-template-columns:repeat(5,1fr)}.two{grid-template-columns:1.35fr .85fr}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}.stat-label{font-size:12px;color:var(--muted)}.stat-value{font-size:28px;font-weight:850;margin:5px 0}.progress{height:9px;background:#edf1f5;border-radius:99px;overflow:hidden;margin:10px 0}.bar{height:100%;background:var(--primary);border-radius:99px}.pill{display:inline-block;border-radius:99px;padding:4px 8px;background:var(--primary-soft);color:var(--primary);font-size:11px;font-weight:800}
+.btn{border:0;border-radius:10px;padding:10px 14px;background:var(--primary);color:#fff;font-weight:750;cursor:pointer}.btn.secondary{background:var(--primary-soft);color:var(--primary)}.btn.success{background:var(--success-soft);color:var(--success)}.btn.danger{background:var(--danger-soft);color:var(--danger)}.btn:hover{filter:brightness(.97)}
+.subject h3{margin:9px 0 2px}.subject p{font-size:12px;min-height:32px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.select,input[type=text],input[type=date]{border:1px solid var(--line);background:#fff;border-radius:9px;padding:9px}
+.upload{border:2px dashed #b8c9d9;text-align:center;padding:32px;background:#fbfdff}.file-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:15px}.file-card{border:1px solid var(--line);border-radius:12px;padding:14px}.file-card h4{margin:0 0 7px;word-break:break-word}.actions{display:flex;gap:7px;flex-wrap:wrap}
+.question{font-size:18px;line-height:1.5}.option{display:block;width:100%;border:1px solid var(--line);background:#fff;border-radius:10px;text-align:left;padding:13px;margin:8px 0;cursor:pointer}.option:hover{border-color:var(--primary);background:#f7fbff}.option.correct{border-color:var(--success);background:var(--success-soft)}.option.wrong{border-color:var(--danger);background:var(--danger-soft)}
+textarea{width:100%;min-height:150px;border:1px solid var(--line);border-radius:10px;padding:12px;resize:vertical}
+.timer{text-align:center;font-size:70px;font-weight:900;letter-spacing:2px}.center{text-align:center}.divider{border:0;border-top:1px solid var(--line);margin:20px 0}
+.modal{display:none;position:fixed;z-index:60;inset:0;background:rgba(15,23,42,.55);padding:20px;align-items:center;justify-content:center}.modal.open{display:flex}.modalbox{background:#fff;border-radius:16px;width:min(1000px,100%);max-height:92vh;overflow:auto;padding:18px}.viewer{width:100%;height:70vh;border:1px solid var(--line);border-radius:10px}
+.toast{display:none;position:fixed;z-index:100;right:20px;bottom:20px;background:#172033;color:#fff;border-radius:10px;padding:12px 16px}.toast.show{display:block}.mobile{display:none}
+@media(max-width:1100px){.subjects{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(2,1fr)}.file-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:750px){.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:translateX(0)}main{margin-left:0;padding:16px}.mobile{display:inline-block}.top{flex-direction:column;align-items:stretch}.search{width:100%}.subjects,.stats,.file-grid,.two{grid-template-columns:1fr}.timer{font-size:55px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="brand"><div class="emoji">🩺</div><h2>PNLE Command Center</h2><small>NP I–NP V Study Tracker</small></div>
+ <nav>
+  <button class="active" data-page="dashboard">🏠 Dashboard</button>
+  <button data-page="reviewers">📚 My Reviewers</button>
+  <button data-page="coverage">🗂 Coverage Tracker</button>
+  <button data-page="practice">🧠 Practice Questions</button>
+  <button data-page="mock">📝 Mock Exam</button>
+  <button data-page="flashcards">🃏 Flashcards</button>
+  <button data-page="analytics">📊 Analytics</button>
+  <button data-page="timer">⏱ Study Timer</button>
+  <button data-page="notes">📝 Notes</button>
+  <button data-page="settings">⚙️ Settings & Backup</button>
+ </nav>
+</aside>
+
+<main>
+ <div class="top">
+  <div><button class="btn secondary mobile" onclick="toggleMenu()">☰</button> <h1 id="pageTitle" style="display:inline">PNLE Study Dashboard</h1><div class="muted">Your personal board-exam command center</div></div>
+  <input id="search" class="search" placeholder="Search reviewers, topics, notes..." oninput="renderAll()">
+ </div>
+
+ <section id="dashboard" class="active">
+  <div class="grid stats">
+   <div class="card"><div class="stat-label">OVERALL COVERAGE</div><div class="stat-value" id="overall">0%</div><div class="progress"><div class="bar" id="overallBar"></div></div></div>
+   <div class="card"><div class="stat-label">REVIEWER FILES</div><div class="stat-value" id="fileCount">0</div><span class="muted">saved in this browser</span></div>
+   <div class="card"><div class="stat-label">QUESTIONS ANSWERED</div><div class="stat-value" id="answered">0</div><span class="muted">practice + mock</span></div>
+   <div class="card"><div class="stat-label">STUDY MINUTES</div><div class="stat-value" id="studyMinutes">0</div><span class="muted">completed timer sessions</span></div>
+  </div>
+  <h2>NP I–NP V Coverage</h2><div id="subjectCards" class="grid subjects"></div>
+  <div class="grid two" style="margin-top:15px"><div class="card"><h3>🔴 Priority Review</h3><div id="weakAreas"></div></div><div class="card"><h3>📌 Recent Activity</h3><div id="recentActivity"></div></div></div>
+ </section>
+
+ <section id="reviewers">
+  <div class="section-head"><div><h2>My Reviewers</h2><div class="muted">Upload and organize your personal reviewer materials.</div></div><button class="btn" onclick="document.getElementById('fileInput').click()">＋ Upload</button></div>
+  <div class="card upload">
+   <h3>Upload your reviewer files</h3><p class="muted">PDFs can be opened in the built-in viewer. Other supported files are stored as organized file records.</p>
+   <input id="fileInput" type="file" multiple accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.jpg,.jpeg,.png">
+   <div style="margin-top:10px">
+    <select id="fileNP" class="select"><option>NP I</option><option>NP II</option><option>NP III</option><option>NP IV</option><option>NP V</option></select>
+    <input id="fileTopic" type="text" placeholder="Topic / subtopic (optional)">
+    <button class="btn" onclick="saveFiles()">Save to My Reviewers</button>
+   </div>
+  </div>
+  <div id="fileGrid" class="file-grid"></div>
+ </section>
+
+ <section id="coverage">
+  <div class="section-head"><div><h2>Coverage Tracker</h2><div class="muted">Track every supplied NP I–NP V coverage area.</div></div><button class="btn secondary" onclick="markNPReviewed()">Mark an NP as Reviewed</button></div>
+  <div id="coverageList"></div>
+ </section>
+
+ <section id="practice">
+  <div class="section-head"><div><h2>Practice Questions</h2><div class="muted">Use starter questions or build your own bank from your reviewers.</div></div><button class="btn" onclick="addQuestion()">＋ Add Question</button></div>
+  <div class="card" style="margin-bottom:15px">
+   <select id="practiceNP" class="select"><option>All NP</option><option>NP I</option><option>NP II</option><option>NP III</option><option>NP IV</option><option>NP V</option></select>
+   <select id="practiceCount" class="select"><option>5</option><option>10</option><option>20</option></select>
+   <button class="btn" onclick="startPractice()">Start Practice</button>
+  </div>
+  <div id="practiceArea" class="card"><p class="muted">Select a subject and start a practice session.</p></div>
+  <div class="card" style="margin-top:15px"><h3>Question Bank</h3><div id="questionBank"></div></div>
+ </section>
+
+ <section id="mock">
+  <h2>Mock Exam</h2><div class="card"><p class="muted">Build a mixed-NP exam from your question bank.</p><select id="mockCount" class="select"><option>10</option><option>20</option><option>30</option><option>50</option></select> <button class="btn" onclick="startMock()">Start Mock Exam</button></div>
+  <div id="mockArea" class="card" style="margin-top:15px"><p class="muted">Your mock exam will appear here.</p></div>
+ </section>
+
+ <section id="flashcards">
+  <div class="section-head"><div><h2>Flashcards</h2><div class="muted">Create high-yield cards and mark what you know.</div></div><button class="btn" onclick="addFlashcard()">＋ Add Flashcard</button></div>
+  <div id="flashcardList"></div>
+ </section>
+
+ <section id="analytics">
+  <h2>Analytics</h2>
+  <div class="grid two"><div class="card"><h3>Coverage by NP</h3><div id="npAnalytics"></div></div><div class="card"><h3>Quiz History</h3><div id="quizAnalytics"></div></div></div>
+ </section>
+
+ <section id="timer">
+  <div class="card center"><h2>Study Timer</h2><div class="timer" id="timerDisplay">25:00</div><button class="btn" id="timerButton" onclick="toggleTimer()">Start</button> <button class="btn secondary" onclick="resetTimer()">Reset</button><p class="muted">Complete a 25-minute session to add it to your study total.</p></div>
+ </section>
+
+ <section id="notes">
+  <div class="section-head"><div><h2>Notes</h2><div class="muted">Keep high-yield notes beside your reviewers.</div></div><button class="btn" onclick="addNote()">＋ Add Note</button></div>
+  <div id="notesList"></div>
+ </section>
+
+ <section id="settings">
+  <h2>Settings & Backup</h2>
+  <div class="card">
+   <h3>Exam Goal</h3><label>Target date <input id="examDate" type="date" onchange="setExamDate(this.value)"></label><p id="countdown" class="muted"></p>
+   <hr class="divider">
+   <h3>Backup</h3><button class="btn secondary" onclick="exportData()">Export JSON Backup</button> <button class="btn secondary" onclick="document.getElementById('importInput').click()">Import JSON Backup</button><input id="importInput" type="file" accept=".json" style="display:none" onchange="importData(this)">
+   <p class="muted">Use backups regularly. This GitHub Pages version stores data in your browser; it does not provide a shared cloud database.</p>
+   <hr class="divider"><button class="btn danger" onclick="resetApp()">Reset All Local Data</button>
+  </div>
+ </section>
+</main></div>
+
+<div class="modal" id="viewerModal"><div class="modalbox"><div class="section-head"><h3 id="viewerTitle">Reviewer PDF</h3><button class="btn danger" onclick="closeViewer()">Close</button></div><iframe id="pdfViewer" class="viewer"></iframe></div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+const COVERAGE={
+"NP I":["Care of Individuals in Community Setting","Care of Families in the Community","Care of Population Groups","Care of the Community","Health Education and Research"],
+"NP II":["Care of Mother Before Birth","Care During Labor and Birth","Care of Mother Following Birth","Complications of Pregnancy","Labor and Postpartum Complications","Human Growth and Development","Neonate / Infancy","Toddler / Preschool / School-age / Adolescent"],
+"NP III":["Care of Patients Undergoing Surgery","Oxygenation","Fluids, Electrolytes & Acid-Base Balance","Infectious, Inflammatory & Immunologic Disorders","Cellular Aberrations"],
+"NP IV":["Nutrition and Gastrointestinal Disorders","Metabolic and Endocrine Disorders","Perception and Coordination Disorders"],
+"NP V":["Mental Health / Psychiatric Nursing","Critical Care / Acute & Emergency Nursing"]
+};
+
+const STARTER_QUESTIONS=[
+{np:"NP I",topic:"Care of the Community",q:"Which activity is most consistent with community health nursing?",opts:["Planning a community health intervention","Preparing an operating room","Managing a ventilator","Performing an ECG"],a:0,e:"Community health nursing includes assessment, planning, intervention and evaluation in the community."},
+{np:"NP II",topic:"Care During Labor and Birth",q:"Which tool is associated with monitoring labor progress?",opts:["Partograph","Glasgow Coma Scale","Braden Scale","APGAR medication chart"],a:0,e:"The supplied coverage includes the partograph under labor and birth."},
+{np:"NP III",topic:"Fluids, Electrolytes & Acid-Base Balance",q:"Which NP includes fluids, electrolytes and acid-base balance?",opts:["NP III","NP I","NP II","NP IV"],a:0,e:"NP III includes fluids, electrolytes and acid-base balance."},
+{np:"NP IV",topic:"Metabolic and Endocrine Disorders",q:"Which area belongs to NP IV?",opts:["Metabolic and endocrine disorders","Primary health care","Normal labor","Psychiatric nursing"],a:0,e:"NP IV includes metabolic and endocrine disorders."},
+{np:"NP V",topic:"Mental Health / Psychiatric Nursing",q:"Which area is part of NP V?",opts:["Psychiatric nursing","Prenatal care","Community organizing","Gastrointestinal absorption"],a:0,e:"NP V includes mental health and psychiatric nursing."},
+{np:"NP V",topic:"Critical Care / Acute & Emergency Nursing",q:"Which area belongs to high-acuity and emergency care?",opts:["Shock","Family planning","Normal puerperium","Health education"],a:0,e:"NP V includes critical care and acute/emergency nursing."}
+];
+
+let state=load();
+function load(){
+ let s;try{s=JSON.parse(localStorage.getItem("pnleCommandCenterFinal")||"null")}catch(e){}
+ s=s||{files:[],progress:{},questions:STARTER_QUESTIONS,flashcards:[],notes:[],attempts:[],activity:[],studyMinutes:0,examDate:""};
+ Object.keys(COVERAGE).forEach(np=>COVERAGE[np].forEach(t=>{if(s.progress[np+"|"+t]===undefined)s.progress[np+"|"+t]=0}));
+ return s
+}
+function save(){localStorage.setItem("pnleCommandCenterFinal",JSON.stringify(state));renderAll()}
+function esc(v){return String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function toast(msg){let t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
+function pct(np){let a=COVERAGE[np].map(t=>state.progress[np+"|"+t]||0);return Math.round(a.reduce((x,y)=>x+y,0)/a.length)}
+function overall(){return Math.round(Object.keys(COVERAGE).map(p=>pct(p)).reduce((a,b)=>a+b,0)/5)}
+function renderAll(){renderDashboard();renderFiles();renderCoverage();renderQuestionBank();renderFlashcards();renderAnalytics();renderNotes();document.getElementById("examDate").value=state.examDate||"";updateCountdown();drawTimer()}
+function renderDashboard(){
+ let o=overall();document.getElementById("overall").textContent=o+"%";document.getElementById("overallBar").style.width=o+"%";
+ document.getElementById("fileCount").textContent=state.files.length;document.getElementById("answered").textContent=state.attempts.reduce((n,a)=>n+a.total,0);document.getElementById("studyMinutes").textContent=state.studyMinutes;
+ document.getElementById("subjectCards").innerHTML=Object.keys(COVERAGE).map(np=>`<div class="card subject"><span class="pill">${np}</span><h3>${pct(np)}%</h3><p>${COVERAGE[np].length} major coverage areas</p><div class="progress"><div class="bar" style="width:${pct(np)}%"></div></div><button class="btn secondary" onclick="openPage('coverage')">Open Tracker</button></div>`).join("");
+ let weak=Object.keys(state.progress).map(k=>({k,v:state.progress[k]})).filter(x=>x.v<75).sort((a,b)=>a.v-b.v).slice(0,6);
+ document.getElementById("weakAreas").innerHTML=weak.length?weak.map(x=>`<div class="row"><span>🔴 ${esc(x.k.replace("|"," — "))}</span><b>${x.v}%</b></div>`).join(""):"<p class='muted'>No priority areas below 75%.</p>";
+ document.getElementById("recentActivity").innerHTML=state.activity.length?state.activity.slice(-6).reverse().map(x=>`<p>${x}</p>`).join(""):"<p class='muted'>No activity yet.</p>"
+}
+function renderFiles(){
+ let q=(document.getElementById("search").value||"").toLowerCase();
+ let a=state.files.filter(f=>(f.name+" "+f.np+" "+(f.topic||"")).toLowerCase().includes(q));
+ document.getElementById("fileGrid").innerHTML=a.length?a.map(f=>`<div class="file-card"><h4>📄 ${esc(f.name)}</h4><span class="pill">${esc(f.np)}</span><p class="muted">${esc(f.topic||"Uncategorized")}<br>${esc(f.date)} • ${Math.max(1,Math.round((f.size||0)/1024))} KB</p><div class="actions">${f.type==="application/pdf"&&f.data?`<button class="btn secondary" onclick="viewPDF('${f.id}')">View PDF</button>`:""}<button class="btn danger" onclick="deleteFile('${f.id}')">Delete</button></div></div>`).join(""):"<div class='card' style='grid-column:1/-1'><p class='muted'>No reviewer files match your search.</p></div>"
+}
+function saveFiles(){
+ let files=[...document.getElementById("fileInput").files];if(!files.length){toast("Choose a reviewer file first.");return}
+ let np=document.getElementById("fileNP").value,topic=document.getElementById("fileTopic").value.trim(),pending=files.length;
+ files.forEach(file=>{let r=new FileReader();r.onload=()=>{state.files.push({id:(crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random()),name:file.name,type:file.type,size:file.size,date:new Date().toLocaleString(),np,topic,data:file.type==="application/pdf"?r.result:null});pending--;if(!pending){state.activity.push(`Uploaded <b>${files.length}</b> reviewer file(s) under <b>${np}</b>`);document.getElementById("fileInput").value="";document.getElementById("fileTopic").value="";save();toast("Reviewer file(s) saved.")}};r.readAsDataURL(file)})
+}
+function viewPDF(id){let f=state.files.find(x=>x.id===id);if(!f)return;document.getElementById("viewerTitle").textContent=f.name;document.getElementById("pdfViewer").src=f.data;document.getElementById("viewerModal").classList.add("open")}
+function closeViewer(){document.getElementById("viewerModal").classList.remove("open");document.getElementById("pdfViewer").src=""}
+function deleteFile(id){state.files=state.files.filter(f=>f.id!==id);save();toast("Reviewer deleted.")}
+function renderCoverage(){
+ document.getElementById("coverageList").innerHTML=Object.keys(COVERAGE).map(np=>`<div class="card" style="margin-bottom:14px"><div class="section-head"><h3>${np}</h3><span class="pill">${pct(np)}%</span></div>${COVERAGE[np].map(t=>{let v=state.progress[np+"|"+t]||0;return `<div class="row"><span>${esc(t)}</span><select class="select" onchange="setProgress('${np}',${JSON.stringify(t)},this.value)"><option value="0" ${v===0?"selected":""}>Not Started</option><option value="25" ${v===25?"selected":""}>Studying</option><option value="75" ${v===75?"selected":""}>Reviewed</option><option value="100" ${v===100?"selected":""}>Mastered</option></select></div>`}).join("")}</div>`).join("")
+}
+function setProgress(np,t,v){state.progress[np+"|"+t]=+v;state.activity.push(`Updated <b>${np}</b> — ${esc(t)} to <b>${v}%</b>`);save()}
+function markNPReviewed(){let np=prompt("Enter NP I, NP II, NP III, NP IV, or NP V:");if(!COVERAGE[np]){toast("Invalid NP.");return}COVERAGE[np].forEach(t=>state.progress[np+"|"+t]=75);state.activity.push(`Marked all <b>${np}</b> topics as Reviewed`);save()}
+function addQuestion(){
+ let np=prompt("NP (NP I–NP V):");if(!COVERAGE[np]){toast("Invalid NP.");return}let topic=prompt("Topic:")||"General",q=prompt("Question:");if(!q)return;let opts=[];for(let i=1;i<=4;i++){let x=prompt("Choice "+i+":");if(!x)return;opts.push(x)}let a=+prompt("Correct choice number (1–4):")-1;if(a<0||a>3){toast("Invalid answer.");return}let e=prompt("Explanation:")||"Review the source material.";state.questions.push({np,topic,q,opts,a,e});state.activity.push(`Added a question under <b>${np}</b>`);save();toast("Question added.")}
+function renderQuestionBank(){
+ let filter=document.getElementById("practiceNP").value,q=(document.getElementById("search").value||"").toLowerCase();
+ let a=state.questions.filter(x=>(filter==="All NP"||x.np===filter)&&(x.q+" "+x.np+" "+x.topic).toLowerCase().includes(q));
+ document.getElementById("questionBank").innerHTML=a.map(x=>{let i=state.questions.indexOf(x);return `<div class="row"><div><b>${esc(x.q)}</b><div class="muted">${esc(x.np)} • ${esc(x.topic||"General")}</div></div><button class="btn danger" onclick="deleteQuestion(${i})">Delete</button></div>`}).join("")||"<p class='muted'>No questions match.</p>"
+}
+function deleteQuestion(i){if(confirm("Delete this question?")){state.questions.splice(i,1);save()}}
+let session=[],si=0,score=0,sessionMode="practice",sessionTarget="";
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function startPractice(){let np=document.getElementById("practiceNP").value,n=+document.getElementById("practiceCount").value,pool=state.questions.filter(x=>np==="All NP"||x.np===np);if(!pool.length){toast("No questions available.");return}session=shuffle(pool).slice(0,Math.min(n,pool.length));si=0;score=0;sessionMode="practice";sessionTarget="practiceArea";showQuestion()}
+function startMock(){let n=+document.getElementById("mockCount").value;if(!state.questions.length){toast("Add questions first.");return}session=shuffle(state.questions).slice(0,Math.min(n,state.questions.length));si=0;score=0;sessionMode="mock";sessionTarget="mockArea";showQuestion()}
+function showQuestion(){
+ let box=document.getElementById(sessionTarget);
+ if(si>=session.length){let p=Math.round(score/session.length*100);state.attempts.push({np:sessionMode==="mock"?"Mock":document.getElementById("practiceNP").value,score:p,total:session.length,date:new Date().toLocaleString()});state.activity.push(`Completed ${sessionMode} — <b>${p}%</b>`);save();box.innerHTML=`<div class="center"><h2>🎉 Complete</h2><div style="font-size:50px;font-weight:900">${p}%</div><p>${score} / ${session.length} correct</p><button class="btn" onclick="${sessionMode==="mock"?"startMock()":"startPractice()"}">Try Again</button></div>`;return}
+ let x=session[si];box.innerHTML=`<span class="pill">${esc(x.np)} • ${si+1}/${session.length}</span><div class="question"><h3>${esc(x.q)}</h3></div>${x.opts.map((o,i)=>`<button class="option" onclick="answer(${i})">${String.fromCharCode(65+i)}. ${esc(o)}</button>`).join("")}`
+}
+function answer(i){let x=session[si],buttons=document.querySelectorAll("#"+sessionTarget+" .option");buttons.forEach((b,j)=>{b.disabled=true;if(j===x.a)b.classList.add("correct");if(j===i&&i!==x.a)b.classList.add("wrong")});if(i===x.a)score++;document.getElementById(sessionTarget).insertAdjacentHTML("beforeend",`<div class="card" style="margin-top:12px"><b>${i===x.a?"Correct!":"Review this."}</b><p>${esc(x.e)}</p><button class="btn" onclick="si++;showQuestion()">Next</button></div>`)}
+document.getElementById("practiceNP").addEventListener("change",renderQuestionBank)
+function addFlashcard(){let np=prompt("NP (optional):")||"General",front=prompt("Front/question:");if(!front)return;let back=prompt("Back/answer:");if(!back)return;state.flashcards.push({id:Date.now()+"",np,front,back,known:false});save();toast("Flashcard added.")}
+function renderFlashcards(){document.getElementById("flashcardList").innerHTML=state.flashcards.length?state.flashcards.map(f=>`<div class="card" style="margin-bottom:12px"><span class="pill">${esc(f.np)}</span><h3>${esc(f.front)}</h3><details><summary>Show answer</summary><p>${esc(f.back)}</p></details><button class="btn success" onclick="toggleKnown('${f.id}')">${f.known?"✓ Known":"Mark Known"}</button> <button class="btn danger" onclick="deleteFlash('${f.id}')">Delete</button></div>`).join(""):"<div class='card muted'>No flashcards yet.</div>"}
+function toggleKnown(id){let f=state.flashcards.find(x=>x.id===id);if(f)f.known=!f.known;save()}
+function deleteFlash(id){state.flashcards=state.flashcards.filter(x=>x.id!==id);save()}
+function renderAnalytics(){document.getElementById("npAnalytics").innerHTML=Object.keys(COVERAGE).map(np=>`<p><b>${np}</b> — ${pct(np)}%</p><div class="progress"><div class="bar" style="width:${pct(np)}%"></div></div>`).join("");document.getElementById("quizAnalytics").innerHTML=state.attempts.length?state.attempts.slice(-12).reverse().map(a=>`<div class="row"><span>${esc(a.np)}<br><small class="muted">${esc(a.date)}</small></span><b>${a.score}%</b></div>`).join(""):"<p class='muted'>No attempts yet.</p>"}
+function addNote(){let title=prompt("Note title:");if(!title)return;let text=prompt("Write your note:");if(!text)return;state.notes.push({title,text,date:new Date().toLocaleString()});state.activity.push(`Added note: <b>${esc(title)}</b>`);save()}
+function renderNotes(){let q=(document.getElementById("search").value||"").toLowerCase(),a=state.notes.filter(n=>(n.title+" "+n.text).toLowerCase().includes(q));document.getElementById("notesList").innerHTML=a.length?a.slice().reverse().map(n=>`<div class="card" style="margin-bottom:12px"><h3>${esc(n.title)}</h3><p>${esc(n.text).replace(/\n/g,"<br>")}</p><small class="muted">${esc(n.date)}</small></div>`).join(""):"<div class='card muted'>No notes match.</div>"}
+let remaining=1500,running=false,timerId;
+function drawTimer(){document.getElementById("timerDisplay").textContent=String(Math.floor(remaining/60)).padStart(2,"0")+":"+String(remaining%60).padStart(2,"0");document.getElementById("timerButton").textContent=running?"Pause":"Start"}
+function toggleTimer(){running=!running;if(running){timerId=setInterval(()=>{if(remaining>0){remaining--;drawTimer()}else{clearInterval(timerId);running=false;state.studyMinutes+=25;state.activity.push("Completed a 25-minute study session");save();toast("Study session complete!");drawTimer()}},1000)}else clearInterval(timerId);drawTimer()}
+function resetTimer(){clearInterval(timerId);running=false;remaining=1500;drawTimer()}
+function setExamDate(v){state.examDate=v;save()}
+function updateCountdown(){let el=document.getElementById("countdown");if(!el)return;if(!state.examDate){el.textContent="Set your target date to see the countdown.";return}let d=Math.ceil((new Date(state.examDate+"T23:59:59")-new Date())/86400000);el.textContent=d>=0?`${d} day(s) remaining until your target date.`:"Your target date has passed."}
+function exportData(){let blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="pnle-command-center-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function importData(input){let f=input.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{state=JSON.parse(r.result);Object.keys(COVERAGE).forEach(np=>COVERAGE[np].forEach(t=>{if(state.progress[np+"|"+t]===undefined)state.progress[np+"|"+t]=0}));save();toast("Backup imported.")}catch(e){toast("Invalid backup file.")}};r.readAsText(f)}
+function resetApp(){if(confirm("Delete all tracker data from this browser?")){localStorage.removeItem("pnleCommandCenterFinal");location.reload()}}
+function toggleMenu(){document.getElementById("sidebar").classList.toggle("open")}
+function openPage(page){document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));document.getElementById(page).classList.add("active");document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));let titles={dashboard:"PNLE Study Dashboard",reviewers:"My Reviewers",coverage:"Coverage Tracker",practice:"Practice Questions",mock:"Mock Exam",flashcards:"Flashcards",analytics:"Analytics",timer:"Study Timer",notes:"Notes",settings:"Settings & Backup"};document.getElementById("pageTitle").textContent=titles[page];document.getElementById("sidebar").classList.remove("open")}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>openPage(b.dataset.page));
+renderAll();
+</script>
+</body>
+</html>
