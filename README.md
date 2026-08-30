@@ -1,36 +1,35 @@
-# PNLE Command Center — Final
+# PNLE Command Center V3
 
-GitHub Pages-ready single-file PNLE NP I–NP V study tracker.
+GitHub Pages-ready PNLE study tracker.
 
-## Included
-- Dashboard and overall progress
-- NP I–NP V coverage tracker
-- Reviewer file upload and organization
-- PDF viewer for uploaded PDFs
-- Search
-- Personal question bank
-- Practice quizzes
-- Mixed-NP mock exams
+### Features
+- Username/sign-in/log-out interface
+- Custom NP I–NP V topics with add/rename/delete/progress
+- Reviewer upload organizer
+- Practice and mixed mock exams
+- Automatic mistakes log
+- Weak-process/weak-area ranking
 - Flashcards
-- Notes
-- Weak-area dashboard
-- Analytics and quiz history
-- 25-minute study timer
+- Progress analytics
+- Custom timer with minutes/seconds
+- Completion sound + sound test
+- Light/night mode
 - Exam countdown
-- JSON export/import backup
-- Responsive mobile layout
-- No external libraries required
+- Notes
+- JSON backup/import
+- PNLE AI interface with optional secure backend endpoint
+- Responsive layout
 
-## Publish on GitHub
-1. Create a new GitHub repository.
-2. Upload `index.html` and `README.md`.
-3. Open **Settings → Pages**.
-4. Select **Deploy from a branch**.
-5. Select **main** and **/ (root)**.
-6. Save.
+### Important
+GitHub Pages is static. The included account system is a local demo and is not secure production authentication. For real multi-device accounts, connect Supabase Auth/Firebase and a database/storage layer.
 
-## Data/storage
-This is a static GitHub Pages app. Tracker data and uploaded PDF data are stored in the browser using localStorage. They are not uploaded to GitHub or a cloud database. Use **Settings & Backup → Export JSON Backup** regularly.
+For real AI, connect a server-side endpoint and keep the private AI key on that server. Never put a private API key in `index.html`.
 
-## Scope note
-The app is a study organizer. Starter questions are examples tied to the coverage structure and are not represented as official PRC questions. Add questions directly from your own reviewers for source-based studying.
+### Publish
+Upload `index.html` and `README.md` to GitHub. Then:
+Settings → Pages → Deploy from branch → main → root → Save.
+
+### Backup
+Use Settings → Export Backup regularly.
+
+The included questions are examples/scaffolding, not an official PRC question bank.
